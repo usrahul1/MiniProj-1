@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const user = require('./models/user')
-const { log } = require('console')
+const upload = require('./config/multerconfig')
 
 app.set("view engine", "ejs")
 
@@ -22,6 +22,17 @@ app.get("/", (req, res) => {
 
 app.get("/login", (req, res) => {
     res.render("login")
+})
+
+app.get("/prof", isLoggedIn, (req, res)=>{
+    res.render("prof")
+})
+
+app.post("/profupload", upload.single('file') , isLoggedIn, async (req, res)=>{
+    let user1 = await user.findOne({email: req.user.email})
+    user1.profilepic = req.file.filename
+    await user1.save()
+    res.redirect("/profile")
 })
 
 app.post("/create", async (req, res) => {
@@ -62,6 +73,7 @@ app.get('/logout', (req, res) => {
 
 app.get("/profile", isLoggedIn, async (req, res) => {
     let user = await mongo.findOne({email: req.user.email}).populate("post")
+    console.log(user.profilepic)
     res.render("profile", {user})
 })
 
