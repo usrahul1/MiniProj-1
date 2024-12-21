@@ -9,7 +9,10 @@
 <body>
     <div class="main min-h-screen w-full bg-zinc-900 text-white p-8">
         <div class="prof flex justify-between mr-8">
-            <h1 class="text-2xl font-bold"><span class="font-light">Hello</span> <%=user.name %>, </h1>
+            <div class="prof flex flex-col gap-2">
+                <a href="/prof"><img class="h-20 w-20 rounded-lg overflo-hidden" src="/images/uploads/<%= user.profilepic %>"></a>
+                <h1 class="text-2xl font-bold"><span class="font-light">Hello</span> <%=user.name %>, </h1>
+            </div>
             <form action="/logout" method="get">
                 <input class="bg-red-500 px-2 py-2 pt-1 pb-1 rounded-lg" type="submit" value="Logout">
             </form>
